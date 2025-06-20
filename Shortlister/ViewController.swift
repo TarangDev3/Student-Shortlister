@@ -7,19 +7,52 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UISearchBarDelegate {
     
     var students: [Student] = []
+    var filteredStudents: [Student] = []
+    
+    enum GPASortState {
+        case none
+        case descending
+        case ascending
+    }
+    var gpaSortState: GPASortState = .none
+
     
     @IBOutlet var myTableView: UITableView!
     @IBOutlet var headerView: UIView!
     @IBOutlet var headingLabel: UILabel!
     @IBOutlet var subheadingLabel: UILabel!
+    @IBOutlet var gpaButton: UIButton!
+    @IBOutlet var searchBar: UISearchBar!
+    
+    @IBAction func gpaButtonTapped(_ sender: UIButton) {
+        switch gpaSortState {
+        case .none:
+            filteredStudents.sort { $0.gpa > $1.gpa }
+            gpaSortState = .descending
+            gpaButton.setTitle("4-0", for: .normal)
+            
+        case .descending:
+            filteredStudents.sort { $0.gpa < $1.gpa }
+            gpaSortState = .ascending
+            gpaButton.setTitle("0-4", for: .normal)
+            
+        case .ascending:
+            filteredStudents = students
+            gpaSortState = .none
+            gpaButton.setTitle("GPA", for: .normal)
+        }
+
+        myTableView.reloadData()
+    }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        searchBar.delegate = self
         myTableView.delegate = self
         myTableView.dataSource = self
         
@@ -28,54 +61,84 @@ class ViewController: UIViewController {
         subheadingLabel.text = "WWDC 2025"
         subheadingLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         
-        headerView.layoutIfNeeded()
-        
-        myTableView.tableHeaderView = headerView
-        
         fetchStudents()
     }
     
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        searchBar.backgroundImage = UIImage()
+
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.clearButtonMode = .never
+            textField.borderStyle = .roundedRect
+            textField.layer.cornerRadius = 15
+            textField.clipsToBounds = true
+            textField.font = UIFont.systemFont(ofSize: 18)
+            textField.textColor = .gray
+
+            textField.frame.size.height = 40
+
+        }
+    }
+
+    
     func fetchStudents() {
-            guard let url = URL(string: "https://run.mocky.io/v3/bb3289ea-2131-4ade-bcb4-a06ed487120a") else {
-                print("Invalid URL")
+        guard let url = URL(string: "https://demo9847086.mockable.io/student") else {
+            print("Invalid URL")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            if let error = error {
+                print("API Error:", error)
                 return
             }
             
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                if let error = error {
-                    print("API Error:", error)
-                    return
-                }
-                
-                guard let data = data else {
-                    print("No data received from API")
-                    return
-                }
-                do {
-                    let decodedResponse = try JSONDecoder().decode(StudentsResponse.self, from: data)
-                    DispatchQueue.main.async {
-                        self?.students = decodedResponse.students
-                        self?.myTableView.reloadData()
-                    }
-                } catch {
-                    print("Decoding error:", error)
-                }
+            guard let data = data else {
+                print("No data received from API")
+                return
             }
-            
-            task.resume()
+            do {
+                let decodedResponse = try JSONDecoder().decode(StudentsResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self?.students = decodedResponse.students
+                    self?.filteredStudents = decodedResponse.students
+                    self?.myTableView.reloadData()
+                }
+            } catch {
+                print("Decoding error:", error)
+            }
         }
+        
+        task.resume()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            filteredStudents = students
+        } else {
+            filteredStudents = students.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+        myTableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    
 }
-
-
-
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return students.count
+        return filteredStudents.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let student = students[indexPath.row]
+        let student = filteredStudents[indexPath.row]
         let cell = myTableView.dequeueReusableCell(withIdentifier: "DataCell", for: indexPath) as! StudentCell
         cell.nameLabel.text = "\(student.name)"
         cell.universityLabel.text = "\(student.university)"

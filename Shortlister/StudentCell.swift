@@ -10,7 +10,15 @@ class StudentCell: UITableViewCell {
     
     var onButtonTapped: ((String) -> Void)?
     
-    @IBAction func buttonTapped(_ sender: UIButton) {
-        onButtonTapped?(nameLabel.text ?? "Student")
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+      }
+    
+    @IBAction func handleButtonTap(_ sender: UIButton) {
+        print("Tapped")
+        if let name = nameLabel.text {
+            onButtonTapped?(name)
+        }
     }
 }
