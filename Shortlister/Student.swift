@@ -5,6 +5,8 @@ struct Student: Decodable {
     let university: String
     let gpa: Double
     let skills: String
+    let github: String
+//    var shortlisted: Bool = false
 }
 
 struct StudentsResponse: Decodable {

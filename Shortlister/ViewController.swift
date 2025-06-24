@@ -11,6 +11,10 @@ class ViewController: UIViewController, UISearchBarDelegate {
     
     var students: [Student] = []
     var filteredStudents: [Student] = []
+    var shortlistedNames: Set<String> = []
+    
+    var activityIndicator: UIActivityIndicatorView!
+
     
     enum GPASortState {
         case none
@@ -26,6 +30,7 @@ class ViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet var subheadingLabel: UILabel!
     @IBOutlet var gpaButton: UIButton!
     @IBOutlet var searchBar: UISearchBar!
+    
     
     @IBAction func gpaButtonTapped(_ sender: UIButton) {
         switch gpaSortState {
@@ -61,7 +66,16 @@ class ViewController: UIViewController, UISearchBarDelegate {
         subheadingLabel.text = "WWDC 2025"
         subheadingLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+
+        activityIndicator.startAnimating()
+
+        
         fetchStudents()
+        
     }
     
     
@@ -107,6 +121,7 @@ class ViewController: UIViewController, UISearchBarDelegate {
                     self?.students = decodedResponse.students
                     self?.filteredStudents = decodedResponse.students
                     self?.myTableView.reloadData()
+                    self?.activityIndicator.stopAnimating()
                 }
             } catch {
                 print("Decoding error:", error)
@@ -143,22 +158,63 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.nameLabel.text = "\(student.name)"
         cell.universityLabel.text = "\(student.university)"
         cell.gpaLabel.text = "\(student.gpa)"
-        cell.skillsLabel.text = "\(student.skills)"
+        cell.skillsLabel.text = "\(student.skills)" 
         
-        cell.actionButton.backgroundColor = .systemBlue
-        cell.actionButton.setTitle("Shortlist", for: .normal)
+//        cell.actionButton.backgroundColor = .systemBlue
+//        cell.actionButton.setTitleColor(.white, for: .normal)
+//        cell.actionButton.setTitle("Shortlist", for: .normal)
+        if shortlistedNames.contains(student.name) {
+            cell.actionButton.setTitle("Shortlisted", for: .normal)
+            cell.actionButton.backgroundColor = .lightGray
+            cell.actionButton.setTitleColor(.white, for: .normal)
+            cell.actionButton.isEnabled = false
+        } else {
+            cell.actionButton.setTitle("Shortlist", for: .normal)
+            cell.actionButton.backgroundColor = .systemBlue
+            cell.actionButton.setTitleColor(.white, for: .normal)
+            cell.actionButton.isEnabled = true
+        }
 
+        cell.actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 5)
+
+        
         cell.onButtonTapped = { [weak self] name in
             
             guard let self = self else { return }
             
-            cell.actionButton.backgroundColor = .lightGray
-            cell.actionButton.setTitle("Shortlisted", for: .normal)
-            
-            let alert = UIAlertController(title: nil, message: "\(name) shortlisted", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true)
+            if !self.shortlistedNames.contains(name) {
+                    self.shortlistedNames.insert(name)
+                    self.myTableView.reloadRows(at: [indexPath], with: .none)
+                    print(self.shortlistedNames)
+                    print(indexPath)
+
+                    let alert = UIAlertController(title: nil, message: "\(name) shortlisted", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                    print(self.shortlistedNames)
+                
+                self.myTableView.reloadRows(at: [indexPath], with: .none)
+                }
         }
+        
+        let visitAction = UIAction(title: "Visit GitHub", image: UIImage(systemName: "globe")) { _ in
+            if let url = URL(string: student.github) {
+                UIApplication.shared.open(url)
+            }
+        }
+
+        let shareAction = UIAction(title: "Share Profile", image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+            guard let self = self else { return }
+            let profileInfo = "\(student.name)\n\(student.university)\nGPA: \(student.gpa)\nSkills: \(student.skills)"
+            let activityVC = UIActivityViewController(activityItems: [profileInfo], applicationActivities: nil)
+            self.present(activityVC, animated: true)
+        }
+
+        let menu = UIMenu(title: "", children: [visitAction, shareAction])
+        cell.moreButton.menu = menu
+        cell.moreButton.showsMenuAsPrimaryAction = true
+        cell.moreButton.setTitle("More", for: .normal)
+
 
         
         return cell
