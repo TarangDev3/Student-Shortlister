@@ -121,7 +121,7 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <button autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="topRight" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="clip" pointerInteraction="YES" changesSelectionAsPrimaryAction="YES" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-a1-Mp5">
+                                                                <button autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-a1-Mp5">
                                                                     <rect key="frame" x="233" y="2" width="120" height="21"/>
                                                                     <color key="backgroundColor" systemColor="systemBlueColor"/>
                                                                     <constraints>

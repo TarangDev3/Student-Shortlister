@@ -13,17 +13,16 @@ class StudentCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle = .none
-//        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 2)
-      }
+        selectionStyle = .none      }
     
-//    override func prepareForReuse() {
-//        nameLabel.text = nil
-//        universityLabel.text = nil
-//        gpaLabel.text = nil
-//        skillsLabel.text = nil
-//        actionButton.titleLabel?.text = nil
-//    }
+    override func prepareForReuse() {
+       super.prepareForReuse()
+       actionButton.setTitle("Shortlist", for: .normal)
+       actionButton.backgroundColor = .systemBlue
+       actionButton.setTitleColor(.white, for: .normal)
+       actionButton.isEnabled = true
+       actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+   }
     
     @IBAction func handleButtonTap(_ sender: UIButton) {
         print("Tapped")
@@ -32,4 +31,24 @@ class StudentCell: UITableViewCell {
         }
     }
     
+    func configure(with student: Student) {
+        nameLabel.text = student.name
+        universityLabel.text = student.university
+        gpaLabel.text = "\(student.gpa)"
+        skillsLabel.text = student.skills
+
+        if student.isShortlisted {
+            actionButton.setTitle("Shortlisted", for: .normal)
+            actionButton.backgroundColor = .lightGray
+            actionButton.setTitleColor(.white, for: .normal)
+            actionButton.isEnabled = false
+        } else {
+            actionButton.setTitle("Shortlist", for: .normal)
+            actionButton.backgroundColor = .systemBlue
+            actionButton.setTitleColor(.white, for: .normal)
+            actionButton.isEnabled = true
+        }
+
+        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    }
 }

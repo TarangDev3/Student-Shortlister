@@ -11,7 +11,6 @@ class ViewController: UIViewController, UISearchBarDelegate {
     
     var students: [Student] = []
     var filteredStudents: [Student] = []
-    var shortlistedNames: Set<String> = []
     
     var activityIndicator: UIActivityIndicatorView!
 
@@ -155,46 +154,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let student = filteredStudents[indexPath.row]
         let cell = myTableView.dequeueReusableCell(withIdentifier: "DataCell", for: indexPath) as! StudentCell
-        cell.nameLabel.text = "\(student.name)"
-        cell.universityLabel.text = "\(student.university)"
-        cell.gpaLabel.text = "\(student.gpa)"
-        cell.skillsLabel.text = "\(student.skills)" 
         
-//        cell.actionButton.backgroundColor = .systemBlue
-//        cell.actionButton.setTitleColor(.white, for: .normal)
-//        cell.actionButton.setTitle("Shortlist", for: .normal)
-        if shortlistedNames.contains(student.name) {
-            cell.actionButton.setTitle("Shortlisted", for: .normal)
-            cell.actionButton.backgroundColor = .lightGray
-            cell.actionButton.setTitleColor(.white, for: .normal)
-            cell.actionButton.isEnabled = false
-        } else {
-            cell.actionButton.setTitle("Shortlist", for: .normal)
-            cell.actionButton.backgroundColor = .systemBlue
-            cell.actionButton.setTitleColor(.white, for: .normal)
-            cell.actionButton.isEnabled = true
-        }
-
-        cell.actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 5)
-
+        cell.configure(with: student)
         
         cell.onButtonTapped = { [weak self] name in
             
             guard let self = self else { return }
             
-            if !self.shortlistedNames.contains(name) {
-                    self.shortlistedNames.insert(name)
-                    self.myTableView.reloadRows(at: [indexPath], with: .none)
-                    print(self.shortlistedNames)
-                    print(indexPath)
-
-                    let alert = UIAlertController(title: nil, message: "\(name) shortlisted", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true)
-                    print(self.shortlistedNames)
-                
+            if !student.isShortlisted{
+                student.isShortlisted = true
                 self.myTableView.reloadRows(at: [indexPath], with: .none)
-                }
+
+                let alert = UIAlertController(title: nil, message: "\(name) shortlisted", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true)
+            }
         }
         
         let visitAction = UIAction(title: "Visit GitHub", image: UIImage(systemName: "globe")) { _ in
