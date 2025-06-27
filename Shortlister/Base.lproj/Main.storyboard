@@ -121,30 +121,20 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <button autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-a1-Mp5">
-                                                                    <rect key="frame" x="233" y="2" width="120" height="21"/>
-                                                                    <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4uD-kx-6eN">
+                                                                    <rect key="frame" x="233" y="0.0" width="120" height="25"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="120" id="fan-fm-5k9"/>
+                                                                        <constraint firstAttribute="width" constant="120" id="Zhf-ev-THD"/>
                                                                     </constraints>
-                                                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <state key="normal" title="Button"/>
-                                                                    <buttonConfiguration key="configuration" style="plain" cornerStyle="medium" titleAlignment="center">
-                                                                        <attributedString key="attributedTitle">
-                                                                            <fragment content="Shortlist">
-                                                                                <attributes>
-                                                                                    <font key="NSFont" size="6" name="ComicSansMS-Bold"/>
-                                                                                </attributes>
-                                                                            </fragment>
-                                                                        </attributedString>
-                                                                    </buttonConfiguration>
+                                                                    <buttonConfiguration key="configuration" style="filled" title="Sortlist"/>
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                             <integer key="value" value="10"/>
                                                                         </userDefinedRuntimeAttribute>
                                                                     </userDefinedRuntimeAttributes>
                                                                     <connections>
-                                                                        <action selector="handleButtonTap:" destination="anN-XG-hUe" eventType="touchUpInside" id="REN-EA-QVW"/>
+                                                                        <action selector="handleButtonTap:" destination="anN-XG-hUe" eventType="touchUpInside" id="amY-Sa-XvB"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -154,7 +144,7 @@
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q3b-cv-EP3">
-                                                            <rect key="frame" x="0.0" y="28.333333333333336" width="353" height="25"/>
+                                                            <rect key="frame" x="0.0" y="27.666666666666664" width="353" height="25"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPA :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jrj-uQ-Xns">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="25"/>
@@ -185,7 +175,7 @@
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPo-GZ-t1K">
-                                                            <rect key="frame" x="0.0" y="56" width="353" height="25"/>
+                                                            <rect key="frame" x="0.0" y="55.333333333333329" width="353" height="25"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="University :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDY-RF-tlq">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="25"/>
@@ -210,7 +200,7 @@
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="vCE-Y9-yQE">
-                                                            <rect key="frame" x="0.0" y="90.666666666666686" width="353" height="66.333333333333314"/>
+                                                            <rect key="frame" x="0.0" y="90" width="353" height="67"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Skills :" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7g-SJ-reA">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="20.333333333333332"/>
@@ -250,7 +240,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="actionButton" destination="0uU-a1-Mp5" id="1HU-RX-MvS"/>
+                                            <outlet property="actionButton" destination="4uD-kx-6eN" id="SeP-Hj-7vl"/>
                                             <outlet property="gpaLabel" destination="YJm-dq-HAi" id="P6C-xZ-bQL"/>
                                             <outlet property="moreButton" destination="VaG-oT-2AM" id="2jN-iG-X5D"/>
                                             <outlet property="nameLabel" destination="BdR-8K-ZgK" id="gCJ-dB-dIZ"/>
@@ -291,9 +281,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
