@@ -39,9 +39,24 @@ class StudentListViewModel {
     }
 
     func toggleShortlist(for index: Int) {
+        var student = filteredStudents[index]
+
+        service.updateShortlistStatus(for: student) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    student.isShortlisted = true
+                    self?.filteredStudents[index] = student
+                    self?.onDataChanged?()
+                case .failure(let error):
+                    print("Failed to update shortlist status: \(error.localizedDescription)")
+                }
+            }
+        }
         filteredStudents[index].isShortlisted = true
         onDataChanged?()
     }
+
 
     func sortGPA() {
         switch gpaSortState {
