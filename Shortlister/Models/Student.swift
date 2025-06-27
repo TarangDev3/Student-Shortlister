@@ -1,3 +1,10 @@
+//
+//  Student.swift
+//  Shortlister
+//
+//  Created by Tarang Sultania on 27/06/25.
+//
+
 import Foundation
 
 class Student: Decodable {
@@ -19,7 +26,6 @@ class Student: Decodable {
         gpa = try container.decode(Double.self, forKey: .gpa)
         skills = try container.decode(String.self, forKey: .skills)
         github = try container.decode(String.self, forKey: .github)
-        // isShortlisted stays default `false`
     }
 }
 

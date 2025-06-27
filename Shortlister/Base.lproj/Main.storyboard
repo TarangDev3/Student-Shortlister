@@ -96,7 +96,7 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DataCell" rowHeight="189" id="anN-XG-hUe" customClass="StudentCell" customModule="Shortlister" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="189"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="anN-XG-hUe" id="QTm-Oy-VGo">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="anN-XG-hUe" id="QTm-Oy-VGo">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="189"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>

@@ -1,3 +1,11 @@
+//
+//  StudentCell.swift
+//  Shortlister
+//
+//  Created by Tarang Sultania on 27/06/25.
+//
+
+import Foundation
 import UIKit
 
 class StudentCell: UITableViewCell {
@@ -8,28 +16,27 @@ class StudentCell: UITableViewCell {
     @IBOutlet weak var skillsLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet var moreButton: UIButton!
-    
-    var onButtonTapped: ((String) -> Void)?
-    
+
+    var onButtonTapped: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle = .none      }
-    
-    override func prepareForReuse() {
-       super.prepareForReuse()
-       actionButton.setTitle("Shortlist", for: .normal)
-       actionButton.backgroundColor = .systemBlue
-       actionButton.setTitleColor(.white, for: .normal)
-       actionButton.isEnabled = true
-       actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-   }
-    
-    @IBAction func handleButtonTap(_ sender: UIButton) {
-        print("Tapped")
-        if let name = nameLabel.text {
-            onButtonTapped?(name)
-        }
+        selectionStyle = .none
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        actionButton.setTitle("Shortlist", for: .normal)
+        actionButton.backgroundColor = .systemBlue
+        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.isEnabled = true
+        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    }
+
+    @IBAction func handleButtonTap(_ sender: UIButton) {
+        onButtonTapped?()
+    }
+
     
     func configure(with student: Student) {
         nameLabel.text = student.name
@@ -40,12 +47,10 @@ class StudentCell: UITableViewCell {
         if student.isShortlisted {
             actionButton.setTitle("Shortlisted", for: .normal)
             actionButton.backgroundColor = .lightGray
-            actionButton.setTitleColor(.white, for: .normal)
             actionButton.isEnabled = false
         } else {
             actionButton.setTitle("Shortlist", for: .normal)
             actionButton.backgroundColor = .systemBlue
-            actionButton.setTitleColor(.white, for: .normal)
             actionButton.isEnabled = true
         }
 
