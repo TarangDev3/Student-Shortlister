@@ -39,7 +39,7 @@ class StudentListViewModel {
     }
 
     func toggleShortlist(for index: Int) {
-        var student = filteredStudents[index]
+        let student = filteredStudents[index]
 
         service.updateShortlistStatus(for: student) { [weak self] result in
             DispatchQueue.main.async {
